@@ -3,8 +3,11 @@ import 'package:weather_app/UI/screens/weather_app.dart';
 import 'package:weather_app/UI/widgets/weather_screen/city_container.dart';
 import 'package:weather_app/features/functions.dart';
 import 'package:weather_app/UI/widgets/search_screen/search_widget.dart';
+
 class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+  const SearchScreen({Key? key, required this.onCitiesUpdated}) : super(key: key);
+
+  final Function(List<String>) onCitiesUpdated;
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -24,7 +27,7 @@ class _SearchScreenState extends State<SearchScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => const WeatherApp()));
+            Navigator.pop(context);
           },
         ),
       ),
@@ -51,6 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       cities.removeAt(index);
                       weatherList.removeAt(index);
                       saveCities(cities);
+                      widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
                     });
                   },
                 ),
@@ -74,12 +78,10 @@ class _SearchScreenState extends State<SearchScreen> {
           saveCities(cities);
         });
         showCityFoundDialog(context);
+        widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
       } else {
         showCityNotFoundDialog(context);
       }
     }
   }
 }
-
-
-

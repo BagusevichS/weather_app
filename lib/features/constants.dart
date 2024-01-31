@@ -4,7 +4,6 @@ import 'functions.dart';
 
 class Constants {
   static TextEditingController controller = TextEditingController();
-  static PageController pageController = PageController();
   static String setBackground(int currentPage) {
     if (weatherList.isNotEmpty && currentPage >= 0 && currentPage < weatherList.length) {
       String conditionText = weatherList[currentPage].current.condition.text.toLowerCase();
@@ -19,7 +18,7 @@ class Constants {
         return 'lib/assets/background/cloudy1.png';
       } else if (conditionText.contains('snow')|| conditionText.contains('sleet')) {
         return 'lib/assets/background/showy.jpeg';
-      } else if (conditionText.contains('rain')) {
+      } else if (conditionText.contains('rain')|| conditionText.contains('drizzle')) {
         return 'lib/assets/background/rainy.jpeg';
       }else if (conditionText.contains('overcast')) {
         return 'lib/assets/background/overcast.jpg';

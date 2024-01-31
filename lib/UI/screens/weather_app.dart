@@ -22,6 +22,12 @@ class _WeatherAppState extends State<WeatherApp> {
     });
   }
 
+  void updateCities(List<String> updatedCities) {
+    setState(() {
+      cities = updatedCities;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,9 +41,9 @@ class _WeatherAppState extends State<WeatherApp> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SearchScreen()),
+              MaterialPageRoute(builder: (context) => SearchScreen(onCitiesUpdated: updateCities)),
             );
           },
         ),
@@ -55,8 +61,9 @@ class _WeatherAppState extends State<WeatherApp> {
           ),
           Padding(
             padding: EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width / 20,
-                vertical: MediaQuery.of(context).size.height / 7),
+              horizontal: MediaQuery.of(context).size.width / 20,
+              vertical: MediaQuery.of(context).size.height / 7,
+            ),
             child: Row(
               children: [
                 for (int i = 0; i < cities.length; i++)
