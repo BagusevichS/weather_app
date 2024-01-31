@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/features/constants.dart';
 import 'package:weather_app/features/functions.dart';
 
 
@@ -18,11 +19,15 @@ class DegreesContainer extends StatelessWidget {
               fontWeight: FontWeight.w300
           ),),
           Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Icon(Icons.nightlight_outlined,color: Colors.white,size: 34),
-              Text(weatherList[index].current.condition.text,style: const TextStyle(
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Icon(Constants.setIcon(index) as IconData?,color: Colors.white,size: 34),
+              ),
+              Text(Constants.setCondition(index),style: const TextStyle(
                 color: Colors.white,
-                fontSize: 22
+                fontSize: 24
               ),)
             ],
           )

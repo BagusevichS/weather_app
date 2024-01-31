@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:weather_app/domain/api_clients/api_client.dart';
 import 'package:weather_app/domain/entity/weather.dart';
 import 'package:http/http.dart' as http;
-var cities = ["Москва", "Санкт-Петербург","Сланцы","Благовещенск","Мурманск"];
+var cities = <String>[];// "Санкт-Петербург","Сланцы","Благовещенск","Мурманск"];
 List<Weather> weatherList = [];
 
 Future<void> getWeather(List<String> cities) async {
@@ -74,4 +75,14 @@ void showCityFoundDialog(BuildContext context) {
       );
     },
   );
+}
+
+Future<void> saveCities(List<String> cities) async {
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setStringList('cities', cities);
+}
+
+Future<List<String>> loadCities() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getStringList('cities') ?? [];
 }

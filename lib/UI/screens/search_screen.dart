@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/UI/screens/weather_app.dart';
 import 'package:weather_app/UI/widgets/weather_screen/city_container.dart';
 import 'package:weather_app/features/functions.dart';
 import 'package:weather_app/UI/widgets/search_screen/search_widget.dart';
@@ -23,7 +24,7 @@ class _SearchScreenState extends State<SearchScreen> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => const WeatherApp()));
           },
         ),
       ),
@@ -31,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'lib/assets/night_sky.jpg',
+              'lib/assets/background/night_sky.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -39,20 +40,19 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SearchWidget(onAddTap: () => addCity(controller, context)),
-              Expanded(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: cities.length,
-                  itemBuilder: (context, index) => CityContainer(
-                    city: cities.elementAt(index),
-                    onDelete: () {
-                      setState(() {
-                        cities.removeAt(index);
-                        getWeather(cities);
-                      });
-                    },
-                  ),
+              ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: cities.length,
+                itemBuilder: (context, index) => CityContainer(
+                  city: cities.elementAt(index),
+                  onDelete: () {
+                    setState(() {
+                      cities.removeAt(index);
+                      weatherList.removeAt(index);
+                      saveCities(cities);
+                    });
+                  },
                 ),
               ),
             ],
@@ -71,6 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
           cities.add(cityName);
           controller.clear();
           getWeather(cities);
+          saveCities(cities);
         });
         showCityFoundDialog(context);
       } else {

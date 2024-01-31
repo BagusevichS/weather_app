@@ -35,7 +35,7 @@ class _WeatherAppState extends State<WeatherApp> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(builder: (context) => const SearchScreen()),
             );
@@ -59,7 +59,7 @@ class _WeatherAppState extends State<WeatherApp> {
                 vertical: MediaQuery.of(context).size.height / 7),
             child: Row(
               children: [
-                for (int i = 0; i < weatherList.length; i++)
+                for (int i = 0; i < cities.length; i++)
                   if (i == currentPage)
                     const SliderDot(isActive: true)
                   else
@@ -70,9 +70,9 @@ class _WeatherAppState extends State<WeatherApp> {
           PageView.builder(
             onPageChanged: onPageChanged,
             scrollDirection: Axis.horizontal,
-            itemCount: weatherList.length,
-            itemBuilder: (context, i) => WeatherPage(
-              index: i,
+            itemCount: cities.length,
+            itemBuilder: (context, index) => WeatherPage(
+              index: index,
             ),
           ),
         ],
