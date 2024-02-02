@@ -11,6 +11,7 @@ Future<void> getWeather(List<String> cities) async {
   weatherList.clear();
   for (String city in cities) {
     try{
+      print("here!");
       final apiWeather = await ApiClient().getWeather(city);
       weatherList.addAll(apiWeather);
     }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/features/functions.dart';
@@ -39,24 +40,39 @@ class MyApp extends StatelessWidget {
               ),
             );
           } else if (snapshot.hasError) {
+            Future.delayed(Duration.zero, () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('При загрузке данных произошла ошибка.'),
+                    content: const Text('Проверьте сетевое подключение и перезайдите в приложение.'),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          exit(0);
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            });
             return MaterialApp(
               home: Scaffold(
                 body: Stack(
+                  fit: StackFit.expand,
                   children: [
-                    Positioned.fill(
-                      child: Image.asset(
-                        'lib/assets/night_sky.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    const Center(
-                      child: Text('При загрузке данных произошла ошибка.\n'
-                          'Проверьте сетевое подключение и перезайдите в приложение.',),
+                    Image.asset(
+                      'lib/assets/background/night_sky.jpg',
+                      fit: BoxFit.cover,
                     ),
                   ],
                 ),
               ),
             );
+
           } else {
             return const WeatherApp();
           }

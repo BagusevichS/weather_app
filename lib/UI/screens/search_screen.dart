@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app/UI/screens/weather_app.dart';
 import 'package:weather_app/UI/widgets/weather_screen/city_container.dart';
 import 'package:weather_app/features/functions.dart';
 import 'package:weather_app/UI/widgets/search_screen/search_widget.dart';
@@ -43,20 +42,22 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SearchWidget(onAddTap: () => addCity(controller, context)),
-              ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: cities.length,
-                itemBuilder: (context, index) => CityContainer(
-                  city: cities.elementAt(index),
-                  onDelete: () {
-                    setState(() {
-                      cities.removeAt(index);
-                      weatherList.removeAt(index);
-                      saveCities(cities);
-                      widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
-                    });
-                  },
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: cities.length,
+                  itemBuilder: (context, index) => CityContainer(
+                    city: cities.elementAt(index),
+                    onDelete: () {
+                      setState(() {
+                        cities.removeAt(index);
+                        weatherList.removeAt(index);
+                        saveCities(cities);
+                        widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
+                      });
+                    },
+                  ),
                 ),
               ),
             ],
@@ -71,14 +72,14 @@ class _SearchScreenState extends State<SearchScreen> {
     if (cityName.isNotEmpty) {
       bool isValidCity = await checkCityExistence(cityName);
       if (isValidCity) {
-        setState(() {
-          cities.add(cityName);
-          controller.clear();
-          getWeather(cities);
-          saveCities(cities);
-        });
+        controller.clear();
         showCityFoundDialog(context);
+        setState(() {
+          cities.add(cityName); // стейт нужен, чтобы текущий скрин обновился
+        });
+        await getWeather(cities);
         widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
+        saveCities(cities);
       } else {
         showCityNotFoundDialog(context);
       }

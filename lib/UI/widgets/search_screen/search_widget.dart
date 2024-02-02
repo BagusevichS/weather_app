@@ -26,7 +26,7 @@ class _SearchWidgetState extends State<SearchWidget> {
             child: Row(
               children: [
                 Expanded(
-                  flex: 80,
+                  flex: 85,
                   child: TextField(
                     controller: controller,
                     keyboardType: TextInputType.text,
@@ -40,7 +40,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                   ),
                 ),
                 Expanded(
-                  flex: 20,
+                  flex: 15,
                   child: SquareButton(
                     onTap: widget.onAddTap
                   ),

@@ -15,7 +15,7 @@ class WeatherApp extends StatefulWidget {
 
 class _WeatherAppState extends State<WeatherApp> {
   int currentPage = 0;
-
+  PageController pageController = PageController();
   onPageChanged(int index) {
     setState(() {
       currentPage = index;
@@ -24,7 +24,12 @@ class _WeatherAppState extends State<WeatherApp> {
 
   void updateCities(List<String> updatedCities) {
     setState(() {
+      print(updatedCities);
       cities = updatedCities;
+      print(cities);
+      print(weatherList);
+      pageController.jumpToPage(0);
+      currentPage = 0;
     });
   }
 
@@ -75,6 +80,7 @@ class _WeatherAppState extends State<WeatherApp> {
             ),
           ),
           PageView.builder(
+            controller: pageController,
             onPageChanged: onPageChanged,
             scrollDirection: Axis.horizontal,
             itemCount: cities.length,

@@ -28,7 +28,7 @@ class Constants {
         return 'lib/assets/background/clear.jpg';
       }
     }
-    return 'lib/assets/background/default.jpg';
+    return 'lib/assets/background/night_sky.jpg';
   }
 
   static String setCondition(int currentPage) {
