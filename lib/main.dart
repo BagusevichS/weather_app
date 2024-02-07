@@ -3,23 +3,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:weather_app/features/functions.dart';
 import 'package:weather_app/UI/screens/weather_app.dart';
-
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cities = await loadCities();
+
+  // Запрос на использование геопозиции
+  await requestLocationPermission();
+
+  if (cities.isEmpty) {
+    // получение города из геолокации
+    String currentCity = await getCurrentCityFromGeolocation();
+    cities.add(currentCity);
+
+    // сохранение города
+    await saveCities(cities);
+  }
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     systemNavigationBarColor: Colors.black,
   ));
-  runApp(const MyApp());
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    //блокирую альбомный режим
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -32,11 +43,9 @@ class MyApp extends StatelessWidget {
         future: getWeather(cities),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const MaterialApp(
-              home: Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
               ),
             );
           } else if (snapshot.hasError) {
@@ -59,26 +68,24 @@ class MyApp extends StatelessWidget {
                 },
               );
             });
-            return MaterialApp(
-              home: Scaffold(
-                body: Stack(
-                  fit: StackFit.expand,
-                  children: [
-                    Image.asset(
-                      'lib/assets/background/night_sky.jpg',
-                      fit: BoxFit.cover,
-                    ),
-                  ],
-                ),
+            return Scaffold(
+              body: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.asset(
+                    'lib/assets/background/night_sky.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                ],
               ),
             );
-
           } else {
-            return const WeatherApp();
+            return WeatherApp();
           }
         },
       ),
     );
   }
-
 }
+
+
