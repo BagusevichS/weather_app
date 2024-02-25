@@ -34,7 +34,7 @@ Future<bool> checkCityExistence(String cityName) async {
     // Город существует
     return true;
   } else {
-    // Город не существует
+    // Город не существует или какая-то другая ошибка
     return false;
   }
 }
@@ -67,6 +67,25 @@ void showCityFoundDialog(BuildContext context) {
       return AlertDialog(
         title: const Text('Успех!'),
         content: const Text('Город успешно добавлен на главный экран.'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      );
+    },
+  );
+}
+void showCityIsExist(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Внимание!'),
+        content: const Text('Город уже был добавлен.'),
         actions: <Widget>[
           TextButton(
             onPressed: () {

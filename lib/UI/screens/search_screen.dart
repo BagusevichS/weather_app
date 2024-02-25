@@ -68,20 +68,24 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void addCity(controller, context) async {
-    String cityName = controller.text.trim();
+    String cityName = controller.text.trim().toUpperCase();
     if (cityName.isNotEmpty) {
       bool isValidCity = await checkCityExistence(cityName);
-      if (isValidCity) {
-        controller.clear();
-        showCityFoundDialog(context);
-        setState(() {
-          cities.add(cityName); // стейт нужен, чтобы текущий скрин обновился
-        });
-        await getWeather(cities);
-        widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
-        saveCities(cities);
-      } else {
-        showCityNotFoundDialog(context);
+      if(cities.contains(cityName)){
+        showCityIsExist(context);
+      }else{
+        if (isValidCity) {
+          controller.clear();
+          showCityFoundDialog(context);
+          setState(() {
+            cities.add(cityName); // стейт нужен, чтобы текущий скрин обновился
+          });
+          await getWeather(cities);
+          widget.onCitiesUpdated(cities); // уведомляю WeatherApp, что нужно обновиться
+          saveCities(cities);
+        } else {
+          showCityNotFoundDialog(context);
+        }
       }
     }
   }
