@@ -13,7 +13,7 @@ void main() async {
   if (cities.isEmpty) {
     // получение города из геолокации
     String currentCity = await getCurrentCityFromGeolocation();
-    cities.add(currentCity);
+    cities.add(currentCity.toUpperCase());
 
     // сохранение города
     await saveCities(cities);
